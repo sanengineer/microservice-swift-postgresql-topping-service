@@ -27,19 +27,19 @@ struct ToppingController: RouteCollection {
     }
 
     func createHandler(_ req: Request) throws -> EventLoopFuture<Topping> {
-        let item = try req.content.decode(Topping.self)
-        return item.save(on: req.db).map { item }
+        let topping = try req.content.decode(Topping.self)
+        return topping.save(on: req.db).map { topping }
     }
 
     func getOneHandler(_ req: Request) throws -> EventLoopFuture<Topping> {
-        return Topping.find(req.parameters.get("item_id"), on: req.db)
+        return Topping.find(req.parameters.get("topping_id"), on: req.db)
                 .unwrap(or: Abort(.notFound))
     }
 
     func updateOneHandler(_ req: Request) throws -> EventLoopFuture<Topping> {
         let toppingUpdate = try req.content.decode(ToppingUpdate.self)
 
-        return Topping.find(req.parameters.get("item_id"), on: req.db)
+        return Topping.find(req.parameters.get("topping_id"), on: req.db)
                 .unwrap(or: Abort(.notFound))
                 .flatMap { topping in
                     
